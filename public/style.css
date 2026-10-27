@@ -1,0 +1,237 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Logo Styling */
+.logo-container {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.logo-container img {
+    max-height: 50px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #ffffff;
+}
+
+/* Step Cards */
+.step-card {
+    display: none;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.step-card.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography */
+.subtitle, .field-label {
+    font-size: 14px;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+.step-title {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 30px;
+}
+
+.step-title .highlight {
+    font-style: italic;
+    font-family: 'Cinzel', serif;
+}
+
+.step-title .italic {
+    font-style: italic;
+}
+
+.step-title .bold {
+    font-weight: 700;
+}
+
+/* Toggle Switch (Name / Phone) */
+.toggle-container {
+    display: flex;
+    background-color: #161616;
+    border-radius: 30px;
+    padding: 4px;
+    margin-bottom: 30px;
+    border: 1px solid #2a2a2a;
+}
+
+.toggle-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #888888;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+    background-color: #262626;
+    color: #ffffff;
+}
+
+/* Inputs and Fields */
+.input-group {
+    margin-bottom: 30px;
+}
+
+.input-group input {
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #777777;
+}
+
+.input-group input::placeholder {
+    color: #555555;
+    font-style: italic;
+    font-family: 'Cinzel', serif;
+}
+
+/* 4-Digit PIN Boxes */
+.pin-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.pin-box {
+    width: 60px;
+    height: 64px;
+    background-color: transparent;
+    border: 1px solid #333333;
+    border-radius: 12px;
+    font-size: 24px;
+    color: #ffffff;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.pin-box:focus {
+    border-color: #ffffff;
+}
+
+/* Continue & Action Buttons */
+.continue-btn {
+    width: 100%;
+    background-color: #e0e0e0;
+    color: #000000;
+    border: none;
+    border-radius: 30px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.continue-btn:hover {
+    background-color: #ffffff;
+}
+
+.continue-btn:active {
+    transform: scale(0.98);
+}
+
+/* Congratulation Result Box */
+.congrats-box {
+    background-color: #111111;
+    border: 1px solid #222222;
+    border-radius: 16px;
+    padding: 40px 20px;
+    margin-bottom: 30px;
+}
+
+.success-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.congrats-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.congrats-message {
+    font-size: 16px;
+    color: #b0b0b0;
+    margin-bottom: 20px;
+}
+
+.record-badge {
+    display: inline-block;
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.restart-btn {
+    background-color: #262626;
+    color: #ffffff;
+}
+
+.restart-btn:hover {
+    background-color: #333333;
+}
