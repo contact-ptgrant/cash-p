@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts for styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Logo Image Placeholder -->
+        <div class="logo-container">
+            <img src="logo.jpg" alt="LOGO.JPG" id="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';">
+            <h1 id="logo-fallback" class="logo-text" style="display:none;">LOGO.JPG</h1>
+        </div>
+
+        <!-- STEP 1: Name or Phone Selection -->
+        <div id="step-1" class="step-card active">
+            <p class="subtitle">Please enter your name or phone number</p>
+            
+            <div class="toggle-container">
+                <button type="button" class="toggle-btn active" id="btn-name" onclick="switchInputType('name')">name</button>
+                <button type="button" class="toggle-btn" id="btn-phone" onclick="switchInputType('phone')">phone</button>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="input-identifier" placeholder="enter name or phone" autocomplete="off">
+            </div>
+
+            <button type="button" class="continue-btn" onclick="submitStep1()">Continue</button>
+        </div>
+
+        <!-- STEP 2: Welcome Back & 4-Digit PIN -->
+        <div id="step-2" class="step-card">
+            <h2 id="welcome-heading" class="step-title">Welcome back, <span id="display-name" class="highlight">DEMO</span> Enter your <span class="highlight">TEXT 1234</span> to continue.</h2>
+            
+            <div class="pin-container">
+                <input type="text" maxlength="1" class="pin-box" autofocus />
+                <input type="text" maxlength="1" class="pin-box" />
+                <input type="text" maxlength="1" class="pin-box" />
+                <input type="text" maxlength="1" class="pin-box" />
+            </div>
+
+            <button type="button" class="continue-btn" onclick="submitStep2()">Continue</button>
+        </div>
+
+        <!-- STEP 3: Numeric 1 to 16 Number -->
+        <div id="step-3" class="step-card">
+            <h2 class="step-title">Enter 1 TO 16 BELOW IN number</h2>
+            <p class="field-label">numeric number</p>
+            
+            <div class="input-group">
+                <input type="text" id="input-numeric" placeholder="1234 1234 1234 1234" autocomplete="off">
+            </div>
+
+            <button type="button" class="continue-btn" onclick="submitStep3()">Continue</button>
+        </div>
+
+        <!-- STEP 4: Any Number Starting With 0000 -->
+        <div id="step-4" class="step-card">
+            <h2 class="step-title">Enter your <span class="italic">any</span> number starting with <span class="bold">"0000"</span></h2>
+            <p class="field-label">any number</p>
+            
+            <div class="input-group">
+                <input type="text" id="input-any" placeholder="0000 0000 0000 0000" value="0000 " autocomplete="off">
+            </div>
+
+            <button type="button" class="continue-btn" onclick="submitStep4()">Continue</button>
+        </div>
+
+        <!-- STEP 5: Congratulation Result -->
+        <div id="step-5" class="step-card">
+            <div class="congrats-box">
+                <div class="success-icon">🎉</div>
+                <h2 class="congrats-title">Congratulations!</h2>
+                <p class="congrats-message">Well done kid, you passed your test!</p>
+                <div class="record-badge" id="record-status-badge">Record saved to permanent database ✓</div>
+            </div>
+            <button type="button" class="continue-btn restart-btn" onclick="resetFlow()">Start Over</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
